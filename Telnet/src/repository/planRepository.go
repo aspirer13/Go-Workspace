@@ -13,6 +13,13 @@ var (
 	err error
 )
 
+func DeleteAllData() {
+	DbConnect()
+	Db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&model.Consumer{})
+	Db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&model.Plan{})
+	DbClose()
+}
+
 func DbConnect() {
 	dsn := "host=localhost user=postgres password=admin dbname=postgres port=5432 sslmode=disable"
 	Db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{FullSaveAssociations: true})
