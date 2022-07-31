@@ -7,6 +7,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// dummy push
+
 type Server struct {
 	Gin *config.Gin
 }
