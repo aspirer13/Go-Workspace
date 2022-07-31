@@ -14,13 +14,13 @@ var (
 )
 
 func DeleteAllData() {
-	DbConnect()
+	dbConnect()
 	Db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&model.Consumer{})
 	Db.Session(&gorm.Session{AllowGlobalUpdate: true}).Delete(&model.Plan{})
-	DbClose()
+	dbClose()
 }
 
-func DbConnect() {
+func dbConnect() {
 	dsn := "host=localhost user=postgres password=admin dbname=postgres port=5432 sslmode=disable"
 	Db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{FullSaveAssociations: true})
 	if err != nil {
@@ -30,7 +30,7 @@ func DbConnect() {
 	}
 }
 
-func DbClose() {
+func dbClose() {
 	Dbase, _ := Db.DB()
 	err := Dbase.Close()
 	if err != nil {
@@ -42,14 +42,14 @@ func DbClose() {
 
 // Db.Model(&plan).Association("Customers").Append(&customer)
 func AddPlan(plans []model.Plan) {
-	DbConnect()
+	dbConnect()
 	if len(plans) < 10 {
 		Db.Create(&plans)
 		// Db.Model(&plans).Association("consumer").Append(&model.Consumer{})
 	} else {
 		Db.CreateInBatches(&plans, 3)
 	}
-	DbClose()
+	dbClose()
 }
 
 func GetPlan(plan model.Plan) model.Plan {

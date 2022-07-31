@@ -7,13 +7,13 @@ import (
 )
 
 func AddConsumer(consumers []model.Consumer) {
-	DbConnect()
+	dbConnect()
 	if len(consumers) < 100 {
 		Db.Create(&consumers)
 	} else {
 		Db.CreateInBatches(&consumers, 50)
 	}
-	DbClose()
+	dbClose()
 }
 
 func GetConsumer(db *gorm.DB, consumer model.Consumer) model.Consumer {
@@ -40,7 +40,7 @@ func findConsumerByName(db *gorm.DB, consumerNames []string) []model.Consumer {
 	return consumers
 }
 
-func findCon(db *gorm.DB, id string, duration int) {
+func UpdateConsumerDuration(db *gorm.DB, id string, duration int) {
 	db.Model(model.Plan{}).Where("Id = ?", id).Update("Duration", duration)
 }
 

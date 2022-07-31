@@ -11,6 +11,10 @@ import (
 	"strconv"
 )
 
+func DeleteAllRecords() {
+	repository.DeleteAllData()
+}
+
 func fetchRecords(filePath string) [][]string {
 	f, err := os.Open(filePath)
 	if err != nil {

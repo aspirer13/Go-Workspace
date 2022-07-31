@@ -2,12 +2,12 @@ package router
 
 import (
 	"fmt"
+	"net/http"
 	"src/config"
+	"src/service"
 
 	"github.com/gin-gonic/gin"
 )
-
-// dummy push
 
 type Server struct {
 	Gin *config.Gin
@@ -19,11 +19,18 @@ func (server *Server) Start() {
 	server.run()
 }
 func (server *Server) setUpRoutes() {
-	routerGroup := server.Gin.Engine.Group("employee")
-	routerGroup.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "Employee App",
-		})
+	routerGroup := server.Gin.Engine.Group("telnet")
+	routerGroup.GET("/deleteAllData", func(c *gin.Context) {
+		service.DeleteAllRecords()
+		c.JSON(http.StatusOK, gin.H{"data": "All Data Deleted"})
+	})
+	routerGroup.GET("/ingestplans", func(c *gin.Context) {
+		service.IngestPlansFromCsvFile()
+		c.JSON(http.StatusOK, gin.H{"data": "All plans added"})
+	})
+	routerGroup.GET("/ingestConsumers", func(c *gin.Context) {
+		service.InjestConsumersFromCsvFile()
+		c.JSON(http.StatusOK, gin.H{"data": "All consumers added"})
 	})
 }
 func (server *Server) run() {
