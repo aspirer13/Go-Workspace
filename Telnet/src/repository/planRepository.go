@@ -15,7 +15,7 @@ var (
 
 func DbConnect() {
 	dsn := "host=localhost user=postgres password=admin dbname=postgres port=5432 sslmode=disable"
-	Db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	Db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{FullSaveAssociations: true})
 	if err != nil {
 		panic(err.Error())
 	} else {
@@ -33,10 +33,12 @@ func DbClose() {
 	}
 }
 
+// Db.Model(&plan).Association("Customers").Append(&customer)
 func AddPlan(plans []model.Plan) {
 	DbConnect()
 	if len(plans) < 10 {
 		Db.Create(&plans)
+		// Db.Model(&plans).Association("consumer").Append(&model.Consumer{})
 	} else {
 		Db.CreateInBatches(&plans, 3)
 	}
