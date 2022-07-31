@@ -11460,7 +11460,7 @@ func TestSemverFormatValidation(t *testing.T) {
 		}
 	}
 }
-
+  
 func TestRFC1035LabelFormatValidation(t *testing.T) {
 	tests := []struct {
 		value    string `validate:"dns_rfc1035_label"`
